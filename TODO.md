@@ -3,7 +3,7 @@
     * then  `yarn install`;
     * then `yarn start`
 
-    console should now say 
+### console should now say 
         ` node server listening on port 8000` or something like that :) axios like normal to https://localhost:3000 or 
             if that doesnt work 
             open command prompt 

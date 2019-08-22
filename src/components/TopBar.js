@@ -5,30 +5,23 @@ const TopBar_ = styled.div`
     display:flex;
     flex-direction:row;
     width:100%;
-    background:dodgerblue;
-    justify-content:space-between;
-    box-shadow:0px 6px 8px rgba(0,0,0,.4);
+    // justify-content:space-between;
     p{
         font-size:1.6rem;
-        color:white;
+        color:grey;
         padding:10px;
     }
-    div{
-        margin:10px;
-        width:50px;
-        height:50px;
-        background:rgba(0,0,0,.2);
-        border-radius:10px;
-        border:2px solid rgba(0,0,0,.6);
+    img{
+        width:96px;
     }
+   
 `;
 function TopBar() {
 
     return (
         <TopBar_ className='TopBar'>
-            <div ></div>
+            <img src='https://images.vexels.com/media/users/3/146237/isolated/preview/4d7481767fa748e165ad82ad267195b3-bucket-with-foam-icon-by-vexels.png'/>
             <p>BucketBox</p>
-            <div></div>
         </TopBar_>
 
     )

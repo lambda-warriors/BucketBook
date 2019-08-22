@@ -23,6 +23,8 @@ function Login() {
 
     return (
         <LoginWindow>
+            <h2>Travel, Share, See</h2>
+
             <form onSubmit={event => handleSubmit(event)}>
                 <label hidden> Username:
                     </label>
@@ -58,6 +60,9 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+h2{
+    color:grey;
+}
 form{
     width:100%;
 }

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Login from './components/Login';
 import TopBar from './components/TopBar';
 import Dashboard from './components/Dashboard';
-import {Route} from 'react-router-dom';
+import {Route, NavLink} from 'react-router-dom';
+
+
 
 function App() {
   return (
@@ -11,6 +13,12 @@ function App() {
       <TopBar/>
       <Route exact path='/' component={Login}/>
       <Route path='/dashboard/' component={Dashboard}/>
+
+      <div className='debug'>
+        DEBUG
+        <NavLink to='/dashboard'><p>dashboard</p></NavLink>
+        <NavLink to='/'><p>log-in</p></NavLink>
+      </div>
     </div>
   );
 }

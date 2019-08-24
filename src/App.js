@@ -4,6 +4,7 @@ import Login from './components/Login';
 import TopBar from './components/TopBar';
 import Dashboard from './components/Dashboard';
 import {Route, NavLink} from 'react-router-dom';
+import BucketForm from './components/BucketForm';
 
 
 
@@ -12,7 +13,8 @@ function App() {
     <div className="App">
       <TopBar/>
       <Route exact path='/' component={Login}/>
-      <Route path='/dashboard/' component={Dashboard}/>
+      <Route exact path='/dashboard/' component={Dashboard}/>
+      <Route path='/dashboard/new-bucketlist' component={BucketForm}/>
 
       <div className='debug'>
         DEBUG

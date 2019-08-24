@@ -1,10 +1,11 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 
 .debug{
   position: absolute;;
   bottom:0;
-  width:100%;
-  background:whitesmoke;
+  width:30%;
 }

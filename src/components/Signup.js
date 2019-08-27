@@ -28,10 +28,14 @@ function Signup() {
 
 	const handleSignup = event => {
 		event.preventDefault();
-		console.log(user.name);
-		console.log(user.password);
+		alert(`Username: ${inputValue.username}, 
+        Email: ${inputValue.email},
+        Password: ${inputValue.password},
+        PasswordConfirm: ${inputValue.confirmPassword}`);
 	};
 
-	return <div></div>;
+	return;
+
+	<div></div>;
 }
 export default Signup;

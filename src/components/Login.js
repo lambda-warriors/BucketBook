@@ -3,7 +3,7 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import styled from 'styled-components';
-
+import {Link} from 'react-router-dom';
 function LoginForm({ values, errors, touched, isSubmitting }) {
   return (
       <LoginWindow>
@@ -21,9 +21,11 @@ function LoginForm({ values, errors, touched, isSubmitting }) {
         <Field type="checkbox" name="signed" checked={values.signed} />
         Stay Signed in?
       </div>
-      <button className='sign-in' disabled={isSubmitting}>Submit</button>
-      <button className='sign-up'disabled={isSubmitting}>Sign Up</button>
     </Form>
+    <Link to='/dashboard'>
+      <button className='sign-in' >Submit</button>
+    </Link>
+      <button className='sign-up' >Sign Up</button>
     </LoginWindow>
   );
 }
@@ -109,7 +111,7 @@ button{
     background:rgba(255,255,255,.5);
     padding:10px;
     margin:1rem auto;
-    width:30%;
+    // width:30%;
     color:grey;
     border:none;
     border-radius:10px;

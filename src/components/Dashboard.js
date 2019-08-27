@@ -2,33 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import newBucket from '../img/new-bucket.png'
 import BucketList from './BucketList'
-import {Link} from 'react-router-dom';
-import { Modal, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-
-function DashBoard(props, { values, errors, touched, isSubmitting }) {
-
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    //  setUser({...user, [props.user]: user});
-
-
-
-
+function DashBoard(props) {
+   
     return (
         <Dashboard_>
             <Title>My Bucket Lists: </Title>
-
-            {/* this is where we will put all the new Bucket Lists thta the current user has created
-                 */}
-            <BucketList />
-                 <Link to='/dashboard/new-bucketlist'>
-                      <Button_ ><img src={newBucket} /></Button_>
-                 </Link>
-
+            <BucketList bucketList={props.bucketList} />
+            <Link to='/dashboard/new-bucketlist'>
+                <Button_ ><img src={newBucket} /></Button_>
+            </Link>
         </Dashboard_>
     )
 }

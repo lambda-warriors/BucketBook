@@ -2,16 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-const BucketItem = (props)=>{
-    return(<Card/>)
+const BucketItem = (props) => {
+    return (
+        <Card>
+            <p>{props.title}</p>
+        </Card>
+    )
 }
 
 const Card = styled.div`
-margin:1rem auto;
-    width:32%;
-    height:100px;
+    margin:1rem;
     background:white;
-    border:1px solid black;
+    padding:2rem;
+    width:30%;
+    box-shadow:2px 4px 5px rgba(0,0,0,.2);
 `;
 
 export default BucketItem;

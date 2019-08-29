@@ -69,7 +69,7 @@ function Signup() {
 						onChange={event => handlePasswordConfirmChange(event)}
 					/>
 				</label>
-				<button>Submit!</button>
+				<button>Submit</button>
 			</form>
 		</div>
 	);

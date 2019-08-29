@@ -19,9 +19,8 @@ function App() {
     <div className="App">
       <TopBar />
       <Route exact path='/' component={Login} />
-      <Route exact path='/signup' component={Signup} />
       <Route exact path='/dashboard/' render={() => <Dashboard bucketList={bucket} />} />
-      <Route exact path='/signup/' render={() => <Dashboard bucketList={Signup} />} />
+      <Route exact path='/signup/' component={Signup}/>
       <Route exact path='/dashboard/new-bucketlist' render={() => <BucketForm bucket={bucket} setList={setList} />} />
       {/* <div className='debug'>
         DEBUG

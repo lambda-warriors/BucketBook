@@ -1,127 +1,162 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React from 'react';
+import { withFormik, Form, Field } from "formik";
 import styled from 'styled-components';
+import * as Yup from "yup";
+import axios from "axios";
 
-function Signup() {
-	const [inputValue, setInputValue] = useState({
-		username: '',
-		email: '',
-		password: '',
-		confirmPassword: ''
-	});
+var isSigningUp = false;
 
-	const handleNameChange = event => {
-		setInputValue({ ...inputValue, username: event.target.value });
-	};
-
-	const handleEmailChange = event => {
-		setInputValue({ ...inputValue, email: event.target.value });
-	};
-
-	const handlePasswordChange = event => {
-		setInputValue({ ...inputValue, password: event.target.value });
-	};
-
-	const handlePasswordConfirmChange = event => {
-		setInputValue({ ...inputValue, confirmPassword: event.target.value });
-	};
-
-	const handleSubmit = event => {
-		event.preventDefault();
-		alert(`Username: ${inputValue.username}, 
-        Email: ${inputValue.email},
-        Password: ${inputValue.password},
-        PasswordConfirm: ${inputValue.confirmPassword}`);
-	};
+function SignUpForm({ history, values, errors, touched, isSubmitting }) {
 
 	return (
 		<__Signup>
-			
-			<form onSubmit={event => handleSubmit(event)}>
-				<FormGroup>
+			<h2>Welcome to BucketBook</h2>
+			<Form>
+				<div>
+					{touched.name && errors.name && <p>{errors.name}</p>}
+					<Field className='input' type="text" name="name" placeholder="First Name" />
+				</div>
+				<div>
+					{touched.email && errors.email && <p>{errors.email}</p>}
+					<Field className='input' type="email" name="email" placeholder="Email" />
+				</div>
+				<div>
+					{touched.password && errors.password && <p>{errors.password}</p>}
+					<Field className='input' type="password" name="password" placeholder="Password" />
+				</div>
+				<div className='signed-in'>
+					<Field type="checkbox" name="tos" checked={values.signed} />
+					agree to terms of service?
+     			 </div>
+				<button type='submit'
+					onClick={
+						() =>
+							{
+								return setTimeout(() => {
+									isSigningUp ? history.push('/'): alert('some information is needed to Continue');
+								}, 650);
+							}
+					} disabled={isSubmitting} className='sign-in' >Sign up!</button>
 
-					<label>
-						Username:
-					<input
-							type='text'
-							name='username'
-							onChange={event => handleNameChange(event)}
-						/>
-					</label>
-					<label>
-						Email:
-					<input
-							type='text'
-							name='email'
-							onChange={event => handleEmailChange(event)}
-						/>
-					</label>
-					<label>
-						Password:
-					<input
-							type='text'
-							name='password'
-							onChange={event => handlePasswordChange(event)}
-						/>
-					</label>
-					<label>
-						Confirm Password:
-					<input
-							type='text'
-							name='confirm password'
-							onChange={event => handlePasswordConfirmChange(event)}
-						/>
-					</label>
-				</FormGroup>
-				<button>Submit!</button>
-			</form>
+				<button className='sign-up' >Discard Changes</button>
+			</Form>
 		</__Signup>
 	);
 }
-const FormGroup = styled.div`
-	margin:0 auto;
-	display:flex;
-	flex-direction:column;	
-	justify-content:center;
-	width:80%;
-	input {
 
-		outline: none;
-		margin: 1rem auto;
-		text-align: center;
-		padding: 1rem;
-		border: 2px solid lightgray;
-		border-radius: 10px;
-		width:47%;
-		@media (max-width: 500px) {
-			width: 80%;
+
+const SignUp = withFormik({
+	mapPropsToValues({name, email, password, tos }) {
+		return {
+			name: name||"",
+			email: email || "",
+			password: password || "",
+			tos: tos || false
+		};
+	},
+	validationSchema: Yup.object().shape({
+		email: Yup.string()
+			.email("Email not valid")
+			.required("Email is required"),
+		password: Yup.string()
+			.min(6, "Password must be 6 characters or longer")
+			.required("Password is required")
+	}),
+	handleSubmit(values, { resetForm, setErrors, setSubmitting, localStorage }) {
+		if (values.email === "alreadytaken@atb.dev") {
+			setErrors({ email: "That email is already taken" });
+		} else {
+			axios
+				.post("https://bucket-list-be.herokuapp.com/api/register", values)
+				.then(res => {
+					isSigningUp = true;
+					console.log(res);
+					window.localStorage.setItem('token', res.data.token)
+					resetForm();
+					setSubmitting(false);
+				})
+				.catch(err => {
+					isSigningUp = false;
+					console.log(err);
+					setSubmitting(false);
+				});
 		}
 	}
-`;
+})(SignUpForm);
+
+
+
 const __Signup = styled.div`
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	h2 {
-		color: grey;
-	}
-	form {
-		width: 100%;
-	}
-	
-	button {
-		padding: 10px;
-		margin: 1rem auto;
-		width: 40%;
-		background: dodgerblue;
-		color: white;
-		@media (max-width: 500px) {
-			width: 80%;
-		}
-	}
-	
+min-height:85vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+h2{
+    color:grey;
+}
+form{
+    width:100%;
+}
+.input{
+    outline:none;
+    margin:1rem auto;
+    text-align:center;
+    width:60%;
+    padding:1rem;
+    border:none;
+    box-shadow:2px 4px 5px rgba(0,0,0,.2);
+    border-radius:10px;
+    background:whitesmoke;
+    @media(max-width:500px){
+        width:80%;
+    }
+}
+.sign-in{
+    transition: background-color .5s ease-out;
+    &:hover {
+        background:dodgerblue;
+        cursor: pointer;
+      }
+}
+.sign-up{
+    transition: background-color .5s ease-out;
+    &:hover {
+        background:magenta;
+        cursor: pointer;
+      }
+}
+button{
+    background:rgba(255,255,255,.5);
+    padding:10px;
+    margin:1rem auto;
+    // width:30%;
+    color:grey;
+    border:none;
+    border-radius:10px;
+    &:hover{
+        color:white;
+    }
+    @media(max-width:500px){
+        width:80%;
+    }
+}
+.signed-in{
+    width:60%;
+    margin:0 auto;
+    text-align:end;
+    p{
+        color:grey;
+    }
+    input{
+        width:100px;
+        padding:0px;
+        margin:0;
+    }
+}
+p{
+    margin:0;
+    color:red;
+}
 `;
-
-export default Signup;
+export default SignUp;

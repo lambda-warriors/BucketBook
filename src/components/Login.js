@@ -3,7 +3,7 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 var isLoggedIn = false;
 
 function LoginForm({ history, values, errors, touched, isSubmitting }) {
@@ -26,13 +26,16 @@ function LoginForm({ history, values, errors, touched, isSubmitting }) {
           Stay Signed in?
       </div>
         <button type='submit'
-         onClick={
-          () =>
-            setTimeout(() => {
-              isLoggedIn ? history.push('/dashboard') : alert('please log in to Continue')
-            }, 550)
-        } disabled={isSubmitting} className='sign-in' >Submit</button>
-        <button className='sign-up' >Sign Up</button>
+          onClick={
+            () =>
+              setTimeout(() => {
+                isLoggedIn ? history.push('/dashboard') : alert('please log in to Continue')
+              }, 550)
+          } disabled={isSubmitting} className='sign-in' >Submit</button>
+        <Link to='/signup/'>
+          <button className='sign-up' >Sign Up</button>
+
+        </Link>
       </Form>
     </LoginWindow>
   );
@@ -61,7 +64,7 @@ const Login = withFormik({
       axios
         .post("https://bucket-list-be.herokuapp.com/api/login", values)
         .then(res => {
-          isLoggedIn=true;
+          isLoggedIn = true;
           console.log(res);
           // console.log(res.data);
           window.localStorage.setItem('token', res.data.token)
@@ -70,7 +73,7 @@ const Login = withFormik({
         })
         .catch(err => {
           isLoggedIn = false;
-          console.log(err); 
+          console.log(err);
           setSubmitting(false);
         });
     }

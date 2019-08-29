@@ -1,42 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
-function LoginForm({ values, errors, touched, isSubmitting }) {
+
+var isLoggedIn = false;
+
+function LoginForm({ history, values, errors, touched, isSubmitting }) {
+
+  console.log(isLoggedIn);
   return (
-      <LoginWindow>
-          <h2>Travel, Share, Together</h2>
-    <Form>
-      <div>
-        {touched.email && errors.email && <p>{errors.email}</p>}
-        <Field className='input' type="email" name="email" placeholder="Email" />
-     </div>
-      <div>
-        {touched.password && errors.password && <p>{errors.password}</p>}
-        <Field className='input' type="password" name="password" placeholder="Password" />
+    <LoginWindow>
+      <h2>Travel, Share, Together</h2>
+      <Form>
+        <div>
+          {touched.email && errors.email && <p>{errors.email}</p>}
+          <Field className='input' type="email" name="email" placeholder="Email" />
+        </div>
+        <div>
+          {touched.password && errors.password && <p>{errors.password}</p>}
+          <Field className='input' type="password" name="password" placeholder="Password" />
+        </div>
+        <div className='signed-in'>
+          <Field type="checkbox" name="signed" checked={values.signed} />
+          Stay Signed in?
       </div>
-      <div className='signed-in'>
-        <Field type="checkbox" name="signed" checked={values.signed} />
-        Stay Signed in?
-      </div>
-    </Form>
-    <Link to='/dashboard'>
-      <button className='sign-in' >Submit</button>
-    </Link>
-      <button className='sign-up' >Sign Up</button>
+        <button type='submit'
+         onClick={
+          () =>
+            setTimeout(() => {
+              isLoggedIn ? history.push('/dashboard') : alert('please log in to Continue')
+            }, 550)
+        } disabled={isSubmitting} className='sign-in' >Submit</button>
+        <button className='sign-up' >Sign Up</button>
+      </Form>
     </LoginWindow>
   );
 }
 
 const Login = withFormik({
-  mapPropsToValues({ email, password, signed, meal }) {
+  mapPropsToValues({ email, password, signed }) {
     return {
       email: email || "",
       password: password || "",
-      signed: signed || false,
-      meal: meal || "silver"
+      signed: signed || false
     };
   },
   validationSchema: Yup.object().shape({
@@ -47,27 +54,31 @@ const Login = withFormik({
       .min(6, "Password must be 6 characters or longer")
       .required("Password is required")
   }),
-  handleSubmit(values, { resetForm, setErrors, setSubmitting }) {
-    // if (values.email === "alreadytaken@atb.dev") {
-    //   setErrors({ email: "That email is already taken" });
-    // } else {
-    //   axios
-    //     .post(" https://bucket-list-be.herokuapp.com/", values)
-    //     .then(res => {
-    //       console.log(res); // Data was created successfully and logs to console
-    //       resetForm();
-    //       setSubmitting(false);
-    //     })
-    //     .catch(err => {
-    //       console.log(err); // There was an error creating the data and logs to console
-    //       setSubmitting(false);
-    //     });
-    // }
+  handleSubmit(values, { resetForm, setErrors, setSubmitting, localStorage }) {
+    if (values.email === "alreadytaken@atb.dev") {
+      setErrors({ email: "That email is already taken" });
+    } else {
+      axios
+        .post("https://bucket-list-be.herokuapp.com/api/login", values)
+        .then(res => {
+          isLoggedIn=true;
+          console.log(res);
+          // console.log(res.data);
+          window.localStorage.setItem('token', res.data.token)
+          resetForm();
+          setSubmitting(false);
+        })
+        .catch(err => {
+          isLoggedIn = false;
+          console.log(err); 
+          setSubmitting(false);
+        });
+    }
   }
 })(LoginForm);
 
-    
-const LoginWindow  = styled.div`
+
+const LoginWindow = styled.div`
 min-height:85vh;
 display: flex;
 flex-direction: column;

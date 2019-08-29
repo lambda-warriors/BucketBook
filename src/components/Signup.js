@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, FormGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
 function Signup() {
@@ -26,7 +26,7 @@ function Signup() {
 		setInputValue({ ...inputValue, confirmPassword: event.target.value });
 	};
 
-	const handleSignup = event => {
+	const handleSubmit = event => {
 		event.preventDefault();
 		alert(`Username: ${inputValue.username}, 
         Email: ${inputValue.email},
@@ -35,47 +35,70 @@ function Signup() {
 	};
 
 	return (
-		<div className='Signup'>
+		<__Signup>
+			
 			<form onSubmit={event => handleSubmit(event)}>
-				<label>
-					Username:
+				<FormGroup>
+
+					<label>
+						Username:
 					<input
-						type='text'
-						name='username'
-						onChange={event => handleNameChange(event)}
-					/>
-				</label>
-				<label>
-					Email:
+							type='text'
+							name='username'
+							onChange={event => handleNameChange(event)}
+						/>
+					</label>
+					<label>
+						Email:
 					<input
-						type='text'
-						name='email'
-						onChange={event => handleEmailChange(event)}
-					/>
-				</label>
-				<label>
-					Password:
+							type='text'
+							name='email'
+							onChange={event => handleEmailChange(event)}
+						/>
+					</label>
+					<label>
+						Password:
 					<input
-						type='text'
-						name='password'
-						onChange={event => handlePasswordChange(event)}
-					/>
-				</label>
-				<label>
-					Confirm Password:
+							type='text'
+							name='password'
+							onChange={event => handlePasswordChange(event)}
+						/>
+					</label>
+					<label>
+						Confirm Password:
 					<input
-						type='text'
-						name='confirm password'
-						onChange={event => handlePasswordConfirmChange(event)}
-					/>
-				</label>
-				<button>Submit</button>
+							type='text'
+							name='confirm password'
+							onChange={event => handlePasswordConfirmChange(event)}
+						/>
+					</label>
+				</FormGroup>
+				<button>Submit!</button>
 			</form>
-		</div>
+		</__Signup>
 	);
 }
+const FormGroup = styled.div`
+	margin:0 auto;
+	display:flex;
+	flex-direction:column;	
+	justify-content:center;
+	width:80%;
+	input {
 
-const Signup = styled.div`
+		outline: none;
+		margin: 1rem auto;
+		text-align: center;
+		padding: 1rem;
+		border: 2px solid lightgray;
+		border-radius: 10px;
+		width:47%;
+		@media (max-width: 500px) {
+			width: 80%;
+		}
+	}
+`;
+const __Signup = styled.div`
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -87,19 +110,7 @@ const Signup = styled.div`
 	form {
 		width: 100%;
 	}
-	input {
-		outline: none;
-		margin: 1rem auto;
-		text-align: center;
-		width: 60%;
-		padding: 1rem;
-
-		border: 2px solid lightgray;
-		border-radius: 10px;
-		@media (max-width: 500px) {
-			width: 80%;
-		}
-	}
+	
 	button {
 		padding: 10px;
 		margin: 1rem auto;
@@ -110,18 +121,7 @@ const Signup = styled.div`
 			width: 80%;
 		}
 	}
-	div {
-		width: 60%;
-		margin: 0 auto;
-		p {
-			color: grey;
-		}
-		input {
-			width: 100px;
-			padding: 0px;
-			margin: 0;
-		}
-	}
+	
 `;
 
 export default Signup;

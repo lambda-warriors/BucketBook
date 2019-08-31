@@ -164,7 +164,7 @@ const FormBody = styled.div`
 `;
 const Content = styled.div`
     display:flex;
-    width:50%;
+    width:100%;
     flex-direction:column;
 `;
 const EditableTitle = styled.input`
